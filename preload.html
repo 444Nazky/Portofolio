@@ -6,12 +6,6 @@
   <title>Multi-Language Preloader</title>
   
   <style>
-    /* Basic reset for body */
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-    }
 
     /* Preloader Background */
     .preloader {
@@ -115,7 +109,7 @@
           currentIndex++;
           
           // Time each word stays on screen (400ms)
-          setTimeout(showNextText, 150); 
+          setTimeout(showNextText, 200); 
         } else {
           // All texts have been shown, hide the preloader container
           setTimeout(() => {
