@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Language Preloader</title>
+  
+  <style>
+    /* Basic reset for body */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    /* Preloader Background */
+    .preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #111; /* Dark background */
+      color: #fff; /* White text */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      /* Smooth slide up when the 'hidden' class is added */
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    /* This class slides the preloader out of the screen */
+    .preloader.hidden {
+      transform: translateY(-100%);
+    }
+
+    /* Text Container */
+    .preloader-texts {
+      position: relative;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Base style for the texts */
+    .preloader-texts span {
+      position: absolute;
+      font-size: 2.5rem;
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease-out; /* Slightly faster transition for quick words */
+      white-space: nowrap; /* Fixes vertical stacking for non-Latin characters */
+    }
+
+    /* Animating text in */
+    .preloader-texts span.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Animating text out */
+    .preloader-texts span.exit {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    /* Sample styles for the main content */
+    .main-content {
+      padding: 50px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="preloader" id="preloader">
+    <div class="preloader-texts">
+      <span class="text-item">Hello</span>
+      <span class="text-item">Ciao</span>
+      <span class="text-item">Bonjour</span>
+      <span class="text-item">Hola</span>
+      <span class="text-item">Halo</span>
+      <span class="text-item">こんにちは</span>
+      <span class="text-item">안녕하세요</span>
+      <span class="text-item">привет</span>
+      <span class="text-item">你好</span>
+      <span class="text-item">kumusta</span>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1>Welcome to my Website!</h1>
+    <p>This content appears after the multi-language preloader smoothly slides up.</p>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const texts = document.querySelectorAll('.text-item');
+      const preloader = document.getElementById('preloader');
+      let currentIndex = 0;
+
+      function showNextText() {
+        // Animate the previous text out
+        if (currentIndex > 0) {
+          texts[currentIndex - 1].classList.remove('active');
+          texts[currentIndex - 1].classList.add('exit');
+        }
+
+        // Show the next text
+        if (currentIndex < texts.length) {
+          texts[currentIndex].classList.add('active');
+          currentIndex++;
+          
+          // Time each word stays on screen (400ms)
+          setTimeout(showNextText, 200); 
+        } else {
+          // All texts have been shown, hide the preloader container
+          setTimeout(() => {
+            preloader.classList.add('hidden');
+            
+            // Completely remove it from the display after the transition finishes
+            setTimeout(() => {
+              preloader.style.display = 'none';
+            }, 800); // This matches the 0.8s CSS transition
+            
+          }, 200); // Small pause after the last word
+        }
+      }
+
+      // Start the text cycle
+      showNextText();
+    });
+  </script>
+
+</body>
+</html>
